@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://bootswatch.com/4/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css">
+    <title>Homepage</title>
+</head>
+<body>
+    <nav class="navbar navbar-light bg-primary justify-content-between ">
+        <div class="container">
+          <a class="navbar-brand text-light">Welcome to the LOTR API</a>
+          <ul class="nav navbar-nav flex-row float-right">
+            {% if session['user_id'] %}
+            <li class="nav-item">
+              <a class="nav-link pr-3 text-light" href="/logout">Logout</a>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a class="nav-link pr-3 text-light" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link pr-3 text-light" href="/register">Sign up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link pr-3 text-light" href="/book">Books</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link pr-3 text-light" href="/character">Characters</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link pr-3 text-light" href="/movie">Movies</a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </nav>
+
+    <h2>ring bearer</h2>
+
+{% block content %}
+{% endblock %}
+   
+</body>
+</html>

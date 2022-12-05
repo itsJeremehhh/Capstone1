@@ -1,0 +1,1 @@
+MY_PRECIOUS = '5ar7MJ3XjdWkHdfe4jcy'
