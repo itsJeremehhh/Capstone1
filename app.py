@@ -1,8 +1,8 @@
 from flask import Flask , render_template, request, redirect, session, flash
-# from flask_httpath import HTTPTokenAuth
+from forms import UserForm
 from flask_debugtoolbar import DebugToolbarExtension
 from precious import MY_PRECIOUS
-# from models import connect_db, db, User
+from models import connect_db, db, User
 # import pdb;pdb.set_trace()
 from sqlalchemy.exc import IntegrityError
 import requests
@@ -17,15 +17,15 @@ app.config["SQLACLCHEMY_ECHO"] = True
 app.config['SECRET_KEY'] = "rohan"
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
-# connect_db(app)
+connect_db(app)
 
 debug = DebugToolbarExtension(app)
 
 
 
-BASE_URL_API = 'https://the-one-api.dev/v2/'
+BASE_URL_API = 'https://the-one-api.dev/v2'
 # include precious in api calls. The response format for all datasets is JSON
-header = {'Authorization': 'Bearer MY_PRECIOUS' }
+# header = {'Authorization': 'Bearer MY_PRECIOUS' }
 
 # handeling the basic UI portion
 @app.route('/')
@@ -77,7 +77,7 @@ def login_user():
 def show_all_books():
     """Return list of all books."""
 
-    url = f'{BASE_URL_API}book'
+    url = f'{BASE_URL_API}/book'
     
     response = requests.request("GET", url)
 
@@ -85,48 +85,65 @@ def show_all_books():
     fello = data["docs"][0]["name"]
     towers = data["docs"][1]["name"]
     king = data["docs"][2]["name"]
-    books = fello, towers, king
-
-    print(books)
+    books = {'fello': fello, 'towers': towers, 'king': king}
+    # print(books)
+    return render_template('books.html', books=books)
 
 
 @app.route('/movies', methods = ["GET"])
-def show_all_movies():
+def all_movie_titles():
     """Return list of all movies titles"""
 
     # will need to use authorization token
 
-    # resp = request.get(f'{BASE_URL_API}movie', 
-    #         "Authorization: Bearer MY_PRECIOUS")
     url = f'{BASE_URL_API}movie'
     headers = {'Authorization': f"Bearer {MY_PRECIOUS}"
     }
-
     response = requests.request("GET", url, headers=headers)
 
     data = response.json()
+    # print(response.text)
+    # Hobbit series
+    unex_jour = data["docs"][2]['name']
+    des_smog = data["docs"][3]['name']
+    five_army = data["docs"][4]['name']
 
+    # Original trilogy
+    rings = data["docs"][6]['name']
+    towers = data["docs"][5]['name']
+    king = data["docs"][7]['name']
 
-    print(response.text)
+    hobbit = unex_jour, des_smog, five_army
+    lotr = rings, towers, king
 
+    all_movies = hobbit, lotr
+    
+    print (all_movies)
+
+def lord_of_rings_series():
+    """Return original series titles"""
+    url = f'{BASE_URL_API}movie'
+    headers = {'Authorization': f"Bearer {MY_PRECIOUS}"
+    }
+    response = requests.request("GET", url, headers=headers)
     # return render_template("movies.html")
 
 @app.route('/characters', methods = ['GET'])
 def show_all_characters():
     """return list of all movies"""
-    import requests
+
     url = f'{BASE_URL_API}character'
     headers = {'Authorization': f"Bearer {MY_PRECIOUS}"
     }
 
     response = requests.request("GET", url, headers=headers)
 
-    print(response.text)
+    # print(response.text)
 
     # resp = request.get(f'{BASE_URL_API}character', 
     #         header=header)
 
-    # return render_template('characters.html')
+    return render_template('characters.html')
 
 
 

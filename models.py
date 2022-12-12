@@ -11,25 +11,27 @@ def connect_db(app):
     db.app = app
     db.init_app(app)
 
-class User(db.model):
+class User(db.Model):
 
     __tablename__ = 'users'
-    id = db.column(db.Integer, primary_key=True, Autoincrement=True)
 
-    username = db.column(db.Text, nullable=False, unique=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 
-    password = db.column(db.Text, nullable=False)
+    username = db.Column(db.Text, nullable=False,  unique=True)
 
-    # @classmethod
-    # def register(cls, username, pwd):
-    #     """register user with hashed password & return user."""
+    password = db.Column(db.Text, nullable=False)
 
-    #     hashed = bcrypt.        generate_password_hash(pwd)
-    #     hashed_utf8 = hashed.decode
-    #     ("utf8")
 
-    #     #return instance of user w/username and hashed pwd
-    #     return cls(username=username, password=hashed_utf8)
+    @classmethod
+    def register(cls, username, pwd):
+        """register user with hashed password & return user."""
+
+        hashed = bcrypt.        generate_password_hash(pwd)
+        hashed_utf8 = hashed.decode
+        ("utf8")
+
+        #return instance of user w/username and hashed pwd
+        return cls(username=username, password=hashed_utf8)
 
     @classmethod
     def authenticate(cls, username, pwd):
