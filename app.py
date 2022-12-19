@@ -77,17 +77,23 @@ def login_user():
 def show_all_books():
     """Return list of all books."""
 
-    url = f'{BASE_URL_API}/book'
-    
-    response = requests.request("GET", url)
+    header = {
+        'accept-encoding': 'gzip, deflate'
+    }
 
+    url = f'{BASE_URL_API}/book'
+   
+    response = requests.request("GET", url, headers=header)
+    
     data = response.json()
+    
     fello = data["docs"][0]["name"]
+    # print('Im here')
     towers = data["docs"][1]["name"]
     king = data["docs"][2]["name"]
     books = {'fello': fello, 'towers': towers, 'king': king}
-    # print(books)
-    return render_template('books.html', books=books)
+    print(books)
+    return render_template('books.html')
 
 
 @app.route('/movies', methods = ["GET"])
